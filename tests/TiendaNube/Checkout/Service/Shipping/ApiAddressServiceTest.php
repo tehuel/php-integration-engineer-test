@@ -81,4 +81,33 @@ class ApiAddressServiceTest extends TestCase
         $this->assertNull($result);
     }
 
+    public function testGetAddressByZipcodeWithServerError()
+    {
+        $headers = [
+            "Content-Type" => "application/json",
+            "Content-Length" => "0"
+        ];
+
+        // queue http responses
+        $mock = new MockHandler([
+            new Response(500, $headers),
+        ]);
+        $handler = HandlerStack::create($mock);
+
+        // http client with mocked handler
+        $client = new Client(['handler' => $handler]);
+
+        // mocking logger
+        $logger = $this->createMock(LoggerInterface::class);
+
+        // creating service
+        $service = new ApiAddressService($client, $logger);
+
+        // testing
+        $result = $service->getAddressByZip('40010000');
+
+        // asserts
+        $this->assertNull($result);
+    }
+
 }
