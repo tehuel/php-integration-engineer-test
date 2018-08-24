@@ -35,13 +35,21 @@ class ApiAddressService
         try {
             $response = $this->client->request('GET', $uri);
             if($response->getStatusCode() == 200) {
-                $responseString = (string) $response->getBody();
-                return \GuzzleHttp\json_decode($responseString, true);
+                return $this->convertJSONResponseToArray($response->getBody()->getContents());
             }
         }
         catch (GuzzleException $e) {
             $this->logger->error('An error occurred trying to fetch the address from the remote Address API, exception with message was caught: ' . $e->getMessage() );//
         }
         return null;
+    }
+
+    /**
+     * Converts the JSON response to Array
+     * @param string $response
+     * @return array
+     */
+    private function convertJSONResponseToArray(string $response): array {
+        return \GuzzleHttp\json_decode($response, true);
     }
 }
