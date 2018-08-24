@@ -25,7 +25,7 @@ class ApiAddressServiceTest extends TestCase
             "Content-Type" => "application/json",
             "Content-Length" => "308"
         ];
-        $body = json_encode($address);
+        $body = '{"altitude":7,"cep":"40010000","latitude":"-12.967192","longitude":"-38.5101976","address":"Avenida da França","neighborhood":"Comércio","city":{"ddd":71,"ibge":"2927408","name":"Salvador"},"state":{"acronym":"BA"}}';
 
         // queue http responses
         $mock = new MockHandler([

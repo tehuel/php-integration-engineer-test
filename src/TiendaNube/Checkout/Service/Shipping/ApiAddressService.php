@@ -67,6 +67,12 @@ class ApiAddressService
      * @return array
      */
     private function convertJSONResponseToArray(string $response): array {
-        return \GuzzleHttp\json_decode($response, true);
+        $apiResponse = json_decode($response);
+        return [
+            'address' => $apiResponse->address,
+            'neighborhood' => $apiResponse->neighborhood,
+            'city' => $apiResponse->city->name,
+            'state' => $apiResponse->state->acronym,
+        ];
     }
 }
