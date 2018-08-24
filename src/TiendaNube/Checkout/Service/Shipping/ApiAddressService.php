@@ -5,20 +5,29 @@ declare(strict_types=1);
 namespace TiendaNube\Checkout\Service\Shipping;
 
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\BadResponseException;
-use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Exception\TransferException;
 use Psr\Log\LoggerInterface;
 
 class ApiAddressService
 {
 
+    /**
+     * The (Guzzle) HTTP Client instance
+     *
+     * @var ClientInterface
+     */
     private $client;
+
+    /**
+     * The logger instance
+     *
+     * @var LoggerInterface
+     */
     private $logger;
 
     /**
      * ApiAddressService constructor.
+     *
      * @param ClientInterface $client
      * @param LoggerInterface $logger
      */
@@ -28,6 +37,13 @@ class ApiAddressService
         $this->logger = $logger;
     }
 
+    /**
+     * Get an address by its zipcode (CEP) from the Address API
+     * or false when not found.
+     *
+     * @param string $zip
+     * @return bool|array
+     */
     public function getAddressByZip(string $zip)
     {
         $uri = "/address/$zip";
@@ -46,6 +62,7 @@ class ApiAddressService
 
     /**
      * Converts the JSON response to Array
+     *
      * @param string $response
      * @return array
      */
