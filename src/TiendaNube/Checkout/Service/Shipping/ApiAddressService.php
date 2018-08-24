@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TiendaNube\Checkout\Service\Shipping;
 
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
 use Psr\Log\LoggerInterface;
 
 class ApiAddressService
@@ -28,10 +29,22 @@ class ApiAddressService
     {
         $uri = "/address/$zip";
 
-        $response = $this->client->request('GET', $uri);
 
-        $response = (string) $response->getBody();
+        try {
+            $response = $this->client->request('GET', $uri);
 
-        return json_decode($response, true);
+            if($response->getStatusCode() == 200) {}
+                $response = (string) $response->getBody();
+                return \GuzzleHttp\json_decode($response, true);
+
+        } catch (GuzzleException $e) {
+            $this->logger->error(
+                'An error occurred at try to fetch the address from the remote API, exception with message was caught: ' .
+                $e->getMessage()
+            );
+
+        }
+
+        return null;
     }
 }
