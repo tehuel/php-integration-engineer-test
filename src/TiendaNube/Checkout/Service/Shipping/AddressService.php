@@ -20,6 +20,10 @@ class AddressService
      */
     private $connection;
 
+    /**
+     * The logger instance
+     * @var LoggerInterface
+     */
     private $logger;
 
     /**
