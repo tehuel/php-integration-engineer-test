@@ -9,7 +9,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use Psr\Log\LoggerInterface;
 use TiendaNube\Checkout\Model\Address;
 
-class ApiAddressService
+class ApiAddressService implements AddressServiceInterface
 {
 
     /**
@@ -40,25 +40,30 @@ class ApiAddressService
 
     /**
      * Get an address by its zipcode (CEP) from the Address API
-     * or false when not found.
      *
      * @param string $zip
-     * @return bool|Address
+     * @return Address
      */
-    public function getAddressByZip(string $zip)
+    public function getAddressByZip(string $zip):?Address
     {
+        // TODO: move this value to an ENV config value
         $uri = "/address/$zip";
+
+        $this->logger->debug("Getting address for the zipcode [$zip] from Address API using URI [$uri]");
 
         try {
             $response = $this->client->request('GET', $uri);
             if($response->getStatusCode() == 200) {
                 return $this->convertToAddressModel($response->getBody()->getContents());
+            } else {
+                $this->logger->debug("Address not found on Address API");
+                return null;
             }
         }
         catch (GuzzleException $e) {
-            $this->logger->error('An error occurred trying to fetch the address from the remote Address API, exception with message was caught: ' . $e->getMessage() );//
+            $this->logger->error('An error occurred trying to fetch the address from the remote Address API, exception with message was caught: ' . $e->getMessage() );
+            return null;
         }
-        return null;
     }
 
     /**

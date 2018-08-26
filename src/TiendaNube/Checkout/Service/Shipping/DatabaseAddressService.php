@@ -8,11 +8,11 @@ use Psr\Log\LoggerInterface;
 use TiendaNube\Checkout\Model\Address;
 
 /**
- * Class AddressService
+ * Class DatabaseAddressService
  *
  * @package TiendaNube\Checkout\Service\Shipping
  */
-class AddressService
+class DatabaseAddressService implements AddressServiceInterface
 {
     /**
      * The database connection link
@@ -28,7 +28,7 @@ class AddressService
     private $logger;
 
     /**
-     * AddressService constructor.
+     * DatabaseAddressService constructor.
      *
      * @param \PDO $pdo
      * @param LoggerInterface $logger
@@ -40,21 +40,12 @@ class AddressService
     }
 
     /**
-     * Get an address by its zipcode (CEP)
-     *
-     * The expected return format is an array like:
-     * [
-     *      "address" => "Avenida da França",
-     *      "neighborhood" => "Comércio",
-     *      "city" => "Salvador",
-     *      "state" => "BA"
-     * ]
-     * or false when not found.
+     * Get an address by its zipcode (CEP) from database
      *
      * @param string $zip
-     * @return bool|Address
+     * @return null|Address
      */
-    public function getAddressByZip(string $zip)
+    public function getAddressByZip(string $zip):?Address
     {
         $this->logger->debug('Getting address for the zipcode [' . $zip . '] from database');
 
@@ -67,15 +58,13 @@ class AddressService
             if ($stmt->rowCount() > 0) {
                 $result = $stmt->fetch(\PDO::FETCH_ASSOC);
                 return $this->convertToAddressModel($result);
+            } else {
+                $this->logger->error('Address not found on Database');
+                return null;
             }
 
-            return null;
         } catch (\PDOException $ex) {
-            $this->logger->error(
-                'An error occurred at try to fetch the address from the database, exception with message was caught: ' .
-                $ex->getMessage()
-            );
-
+            $this->logger->error('An error occurred at try to fetch the address from the database, exception with message was caught: ' . $ex->getMessage() );
             return null;
         }
     }
