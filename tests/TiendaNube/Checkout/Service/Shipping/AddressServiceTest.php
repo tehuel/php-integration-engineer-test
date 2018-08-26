@@ -4,6 +4,7 @@ namespace TiendaNube\Checkout\Service\Shipping;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use TiendaNube\Checkout\Model\Address;
 
 class AddressServiceTest extends TestCase
 {
@@ -16,6 +17,7 @@ class AddressServiceTest extends TestCase
             'city' => 'Salvador',
             'state' => 'BA',
         ];
+        $addressModel = new Address('Avenida da França', 'Comércio', 'Salvador', 'BA');
 
         // mocking statement
         $stmt = $this->createMock(\PDOStatement::class);
@@ -37,7 +39,7 @@ class AddressServiceTest extends TestCase
 
         // asserts
         $this->assertNotNull($result);
-        $this->assertEquals($address,$result);
+        $this->assertEquals($addressModel,$result);
     }
 
     public function testGetNonexistentAddressByZipcode()

@@ -8,18 +8,14 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use TiendaNube\Checkout\Model\Address;
 
 class ApiAddressServiceTest extends TestCase
 {
     public function testGetExistentAddressByZipcode()
     {
-        // expected address
-        $address = [
-            'address' => 'Avenida da França',
-            'neighborhood' => 'Comércio',
-            'city' => 'Salvador',
-            'state' => 'BA',
-        ];
+        // expected address Object
+        $address = new Address('Avenida da França', 'Comércio', 'Salvador', 'BA');
 
         $headers = [
             "Content-Type" => "application/json",
