@@ -40,6 +40,14 @@ class Address
      */
     private $state;
 
+    public function __construct(string $address, string $neighborhood, string $city, string $state)
+    {
+        $this->address = $address;
+        $this->neighborhood = $neighborhood;
+        $this->city = $city;
+        $this->state = $state;
+    }
+
     /**
      * Set the address' main address
      *

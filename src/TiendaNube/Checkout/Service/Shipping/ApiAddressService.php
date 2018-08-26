@@ -7,6 +7,7 @@ namespace TiendaNube\Checkout\Service\Shipping;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Log\LoggerInterface;
+use TiendaNube\Checkout\Model\Address;
 
 class ApiAddressService
 {
@@ -42,7 +43,7 @@ class ApiAddressService
      * or false when not found.
      *
      * @param string $zip
-     * @return bool|array
+     * @return null|Address
      */
     public function getAddressByZip(string $zip)
     {
@@ -51,7 +52,7 @@ class ApiAddressService
         try {
             $response = $this->client->request('GET', $uri);
             if($response->getStatusCode() == 200) {
-                return $this->convertJSONResponseToArray($response->getBody()->getContents());
+                return $this->convertResponseToAddressModel($response->getBody()->getContents());
             }
         }
         catch (GuzzleException $e) {
@@ -64,15 +65,17 @@ class ApiAddressService
      * Converts the JSON response to Array
      *
      * @param string $response
-     * @return array
+     * @return Address
      */
-    private function convertJSONResponseToArray(string $response): array {
+    private function convertResponseToAddressModel(string $response): Address
+    {
         $apiResponse = json_decode($response);
-        return [
-            'address' => $apiResponse->address,
-            'neighborhood' => $apiResponse->neighborhood,
-            'city' => $apiResponse->city->name,
-            'state' => $apiResponse->state->acronym,
-        ];
+
+        return new Address(
+            $apiResponse->address,
+            $apiResponse->neighborhood,
+            $apiResponse->city->name,
+            $apiResponse->state->acronym
+        );
     }
 }
