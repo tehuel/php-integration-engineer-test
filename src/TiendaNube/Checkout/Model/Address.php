@@ -120,4 +120,19 @@ class Address
         return $this->state;
     }
 
+
+    /**
+     * Convert the Addres to array
+     *
+     * @return array
+     */
+    public function toArray():array {
+        return [
+            'address' => $this->address,
+            'neighborhood' => $this->neighborhood,
+            'city' => $this->city,
+            'state' => $this->state
+        ];
+    }
+
 }
