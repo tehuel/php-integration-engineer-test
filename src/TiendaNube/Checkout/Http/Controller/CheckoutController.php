@@ -35,7 +35,7 @@ class CheckoutController extends AbstractController
 
         // checking the result
         if (!is_null($address)) {
-            return $this->json($address);
+            return $this->json($address->toArray());
         }
 
         // returning the error when not found

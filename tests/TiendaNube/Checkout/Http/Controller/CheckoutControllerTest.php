@@ -13,6 +13,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 use TiendaNube\Checkout\Http\Request\RequestStackInterface;
 use TiendaNube\Checkout\Http\Response\ResponseBuilderInterface;
+use TiendaNube\Checkout\Model\Address;
 use TiendaNube\Checkout\Service\Shipping\AddressService;
 
 class CheckoutControllerTest extends TestCase
@@ -30,10 +31,11 @@ class CheckoutControllerTest extends TestCase
             'city' => 'Salvador',
             'state' => 'BA',
         ];
+        $addressModel = new Address('Avenida da França', 'Comércio', 'Salvador', 'BA');
 
         // mocking the address service
         $addressService = $this->createMock(AddressService::class);
-        $addressService->method('getAddressByZip')->willReturn($address);
+        $addressService->method('getAddressByZip')->willReturn($addressModel);
 
         // test
         $result = $controller->getAddressAction('40010000',$addressService);
