@@ -8,11 +8,11 @@ use Psr\Log\LoggerInterface;
 use TiendaNube\Checkout\Model\Address;
 
 /**
- * Class AddressService
+ * Class DatabaseAddressService
  *
  * @package TiendaNube\Checkout\Service\Shipping
  */
-class AddressService implements AddressServiceInterface
+class DatabaseAddressService implements AddressServiceInterface
 {
     /**
      * The database connection link
@@ -28,7 +28,7 @@ class AddressService implements AddressServiceInterface
     private $logger;
 
     /**
-     * AddressService constructor.
+     * DatabaseAddressService constructor.
      *
      * @param \PDO $pdo
      * @param LoggerInterface $logger

@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use TiendaNube\Checkout\Model\Address;
 
-class AddressServiceTest extends TestCase
+class DatabaseAddressServiceTest extends TestCase
 {
     public function testGetExistentAddressByZipcode()
     {
@@ -32,7 +32,7 @@ class AddressServiceTest extends TestCase
         $logger = $this->createMock(LoggerInterface::class);
 
         // creating service
-        $service = new AddressService($pdo,$logger);
+        $service = new DatabaseAddressService($pdo,$logger);
 
         // testing
         $result = $service->getAddressByZip('40010000');
@@ -56,7 +56,7 @@ class AddressServiceTest extends TestCase
         $logger = $this->createMock(LoggerInterface::class);
 
         // creating service
-        $service = new AddressService($pdo,$logger);
+        $service = new DatabaseAddressService($pdo,$logger);
 
         // testing
         $result = $service->getAddressByZip('40010001');
@@ -75,7 +75,7 @@ class AddressServiceTest extends TestCase
         $logger = $this->createMock(LoggerInterface::class);
 
         // creating service
-        $service = new AddressService($pdo,$logger);
+        $service = new DatabaseAddressService($pdo,$logger);
 
         // testing
         $result = $service->getAddressByZip('40010000');
@@ -97,7 +97,7 @@ class AddressServiceTest extends TestCase
         $logger = $this->createMock(LoggerInterface::class);
 
         // creating service
-        $service = new AddressService($pdo,$logger);
+        $service = new DatabaseAddressService($pdo,$logger);
 
         // testing
         $service->getAddressByZip('40010000');
