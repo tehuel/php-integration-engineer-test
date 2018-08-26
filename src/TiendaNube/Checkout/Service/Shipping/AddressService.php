@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TiendaNube\Checkout\Service\Shipping;
 
 use Psr\Log\LoggerInterface;
+use TiendaNube\Checkout\Model\Address;
 
 /**
  * Class AddressService
@@ -51,9 +52,9 @@ class AddressService
      * or false when not found.
      *
      * @param string $zip
-     * @return bool|array
+     * @return bool|Address
      */
-    public function getAddressByZip(string $zip): ?array
+    public function getAddressByZip(string $zip)
     {
         $this->logger->debug('Getting address for the zipcode [' . $zip . '] from database');
 
@@ -64,7 +65,8 @@ class AddressService
 
             // checking if the address exists
             if ($stmt->rowCount() > 0) {
-                return $stmt->fetch(\PDO::FETCH_ASSOC);
+                $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+                return $this->convertToAddressModel($result);
             }
 
             return null;
@@ -77,4 +79,14 @@ class AddressService
             return null;
         }
     }
+
+    private function convertToAddressModel(array $result) {
+        return new Address(
+            $result['address'],
+            $result['neighborhood'],
+            $result['city'],
+            $result['state']
+        );
+    }
+
 }

@@ -43,7 +43,7 @@ class ApiAddressService
      * or false when not found.
      *
      * @param string $zip
-     * @return null|Address
+     * @return bool|Address
      */
     public function getAddressByZip(string $zip)
     {
@@ -52,7 +52,7 @@ class ApiAddressService
         try {
             $response = $this->client->request('GET', $uri);
             if($response->getStatusCode() == 200) {
-                return $this->convertResponseToAddressModel($response->getBody()->getContents());
+                return $this->convertToAddressModel($response->getBody()->getContents());
             }
         }
         catch (GuzzleException $e) {
@@ -67,7 +67,7 @@ class ApiAddressService
      * @param string $response
      * @return Address
      */
-    private function convertResponseToAddressModel(string $response): Address
+    private function convertToAddressModel(string $response): Address
     {
         $apiResponse = json_decode($response);
 
