@@ -44,7 +44,7 @@ class ApiAddressService implements AddressServiceInterface
      * @param string $zip
      * @return Address
      */
-    public function getAddressByZip(string $zip):?Address
+    public function getAddressByZip(string $zip): ?Address
     {
         // TODO: move this value to an ENV config value
         $uri = "/address/$zip";
@@ -67,7 +67,7 @@ class ApiAddressService implements AddressServiceInterface
     }
 
     /**
-     * Converts the JSON response to Array
+     * Converts the JSON $response to Address Model
      *
      * @param string $response
      * @return Address

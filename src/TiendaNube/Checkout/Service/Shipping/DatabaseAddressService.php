@@ -69,6 +69,12 @@ class DatabaseAddressService implements AddressServiceInterface
         }
     }
 
+    /**
+     * Converts the $result array to Address Model
+     *
+     * @param array $result
+     * @return Address
+     */
     private function convertToAddressModel(array $result) {
         return new Address(
             $result['address'],
